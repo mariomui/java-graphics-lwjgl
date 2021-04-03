@@ -67,3 +67,12 @@ collection that javascript has.
    - [ ] Study mode, implmeent week2 - 4 in javascript using Mozilla's ecsy system. I would do it in Angular becasue free rxjs.
 
 ----
+
+## Versioning
+
+* https://github.com/nebula-plugins/nebula-release-plugin
+  * made by netflix
+  * prolly the most stable/robust out there as all the others dont support newest versions of gradle.
+* how to use
+  * bump the major number: ./gradlew <snapshot|devSnapshot|candidate|final> -Prelease.scope=major
+  * bump the patch number: ./gradlew <snapshot|devSnapshot|candidate|final> -Prelease.scope=patch
