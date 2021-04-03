@@ -1,9 +1,9 @@
 gamejava/.gradle
 gamejava/build/
 gamejava/build/**/*
-
 **/build/
 !gamejava/src/**/build/
+gamejava/build/libs
 
 # Ignore Gradle GUI config
 gamejava/gradle-app.setting
