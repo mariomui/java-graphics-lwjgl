@@ -1,5 +1,5 @@
 gamejava/.gradle
-
+gamejava/build/
 
 **/build/
 !gamejava/src/**/build/
