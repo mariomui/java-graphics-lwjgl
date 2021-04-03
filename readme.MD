@@ -76,3 +76,7 @@ collection that javascript has.
 * how to use
   * bump the major number: ./gradlew <snapshot|devSnapshot|candidate|final> -Prelease.scope=major
   * bump the patch number: ./gradlew <snapshot|devSnapshot|candidate|final> -Prelease.scope=patch
+  * `gradle showVersion`
+  * caveats
+    * you have to do a push after word.
+    * improvements need to be on par with my inhouse npm script  but this is good enough for now.
