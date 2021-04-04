@@ -33,3 +33,7 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
     implementation "org.joml:joml:${jomlVersion}"
 }
+
+task showVersion {
+    println version
+}
