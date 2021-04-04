@@ -1,8 +1,7 @@
 plugins {
     id 'java'
+    id 'pl.allegro.tech.build.axion-release' version '1.13.1'
 }
-
-version '1.0-SNAPSHOT'
 
 
 project.ext.lwjglVersion = "3.2.3"
