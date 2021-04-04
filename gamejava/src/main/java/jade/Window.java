@@ -57,11 +57,6 @@ public class Window {
         glfwWindowHint(GLFW_MAXIMIZED,GLFW_TRUE);
         glfwWindowHint(GLFW_RESIZABLE,GLFW_TRUE);
 
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-
         // now make inject/create the window.
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
@@ -70,31 +65,95 @@ public class Window {
         }
 
         // Make the OpenGL context current , or use opengl as opposed to webgl
-        glfwMakeContextCurrent( glfwWindow);
+        /*
+        *  Creates either /OpenGL/ or/ OpenGL ES context/ from specified window current on the calling thread.
+        *  A context must only be made current on a single thread at a time
+        *  Each thread can have only a single current context at a time.
+        *  When moving a context between threads, you must make it non-current on the old thread before making it current on the new one.
+        *  By default, making a context non-current implicitly forces a pipeline flush on machines that support GL_KHR_context_flush_control
+            *  Set the GLFW_CONTEXT_RELEASE_BEHAVIOR hint to flush
+        * The specified window must have an OpenGL or OpenGL ES context.
+        * Specifying a window without a context will generate a GLFW_NO_WINDOW_CONTEXT error.
+        * https://www.gamedev.net/forums/topic/603708-what-exactly-is-an-opengl-context-how-does-it-work/
+        * your operating system and your application both draw stuff on the screen and for your app to work there needs to be
+        * a context to flush.
+        * TLDR: In web parlance, this would be your canvas element.
+         */
+        glfwMakeContextCurrent(glfwWindow);
 
-        // Enable v-sync // no wait times.
+        /* Enable v-sync // no wait times.
+        * The minimum number of screen updates to wait for until the buffers are swapped by glfwSwapBuffers
+           * What does glfwSwapBuffers do?
+            * swaps the front and back buffers of the specified window.
+            * https://community.khronos.org/t/what-are-the-use-of-back-and-front-buffer/24646
+            * double buffer technique originated in games. Atari games, used to draw each pixel to the screen at a time,
+              but when your next screen has A LOT of data, you might want to buffer those changes in a temporary screen and load
+              the entire dataset during the next screen sync up to avoid pixel by pixel rendering. v-sync is a legacy term.
+              means jack squat.
+              TLDR. Batch pixel drawing via buffer.
+        */
         glfwSwapInterval(1);
 
         // Make the window visible
+        // well we turned it off before so lets try this with something else.
+        // glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE) cannot be called after window has been created.
         glfwShowWindow(glfwWindow);
 
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
+        // This line is critical for LWJGL's interoperation with GLFW' OpenGL context
         // LWJGL detects the context that is current in the current thread,
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
-        // TODO more research
+        /*
+        The native OpenGL context itself is created by GLFW's native code when calling glfwCreateWindow and
+        made current in the calling thread when calling glfwMakeContextCurrent.
+        * LWJGL's GL.createCapabilities() =~ GLEW's glewInit()
+        * In order to actually call OpenGL functions, the OpenGL client application has to use platform-specific APIs to
+          query the function pointers for all OpenGL functions by string.
+          That is because the function addresses need not be constant for all OpenGL contexts but can differ by context,
+          so an OpenGL client application actually needs to resolve the function addresses of OpenGL functions such as
+          glCreateShader or glBindBuffer etc. dynamically at runtime via a platform API.
+          * So, what LWJGL's GL.createCapabilities() - or more precisely the GLCapabilities class -
+            does is to query the underlying function pointer addresses for all known OpenGL functions that are declared in
+            any LWJGL OpenGL class, such as GL11..GL46.
+          * In addition, GL.createCapabilities() also loads the
+            names of all available OpenGL extensions and parses the effective OpenGL version.
+          * TLDR: looks up the function in a virtual functions table so the functions you call actually work on your platform.
+        */
         GL.createCapabilities();
 
     }
 
 
     public void loop() {
-        // shouldClose?
+        // shouldClose? glfwWindowShouldClose checks if the window is closed.
+        // if gflw...close is true then the window is closed.
+        // aka isGlfwWindowClosed is a better name
         while (!glfwWindowShouldClose(glfwWindow)) {
+            // we keep looping if the window is open.
+
+            /*
+             window move, resize or menu operation will cause event processing to block, this fires the event queue like
+             // bullshit. if that were the case, disabling these actions should allow app to run without poll events.
+             // truth:
+             * GLFW needs to poll the window system for events both to provide input to the application
+             * Prove to the window system that the application hasn't locked up. <---
+                * on buffer swap, i am certain that glfw checks if the pollevents has been called.
+            */
             glfwPollEvents();
+            /*
+             * Color buffer clears. and defaults remain.
+             * // TODO depth buffer also clears Not clearing
+             * glClear sets the color defaults. while glclear actually clears the buffers
+            */
             glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            /*
+            glfwSwapBuffers swaps the front and back buffers of the specified window when rendering with OpenGL or OpenGL ES.
+            If the swap interval is greater than zero, the GPU driver waits the specified number of screen updates
+            before swapping the buffers.
+            * screen updates? is this the fresh rate? number of changed pixels per second to refresh?
+             */
             glfwSwapBuffers(glfwWindow);
         }
     }
