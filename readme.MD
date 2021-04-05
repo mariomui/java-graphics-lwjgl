@@ -41,7 +41,6 @@ collection that javascript has.
     * `alias JAVA8="export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"`
     * i usually do this for each Java sdk to ensure the global has the correct location of the binary.
 
-
 ------
 
 ## Part 2: Intellij and Coding.
@@ -66,6 +65,13 @@ collection that javascript has.
 - [ ] Week 4 Goals
    - [ ] Study mode, implmeent week2 - 4 in javascript using Mozilla's ecsy system. I would do it in Angular becasue free rxjs.
 
+
+Part 3: CI and CD 
+
+[ ] circle ci orbs
+  [ ] make sure contrib branch is rebased properly against master
+  [ ] on all tests passing, build, on build passing, merge pull request.
+  [ ] on merge delete contributor remote branch.
 ----
 
 ## Versioning
@@ -80,3 +86,22 @@ collection that javascript has.
   * caveats
     * you have to do a push after word.
     * improvements need to be on par with my inhouse npm script  but this is good enough for now.
+
+## Practical 
+
+### Contributing
+
+* step 1 make a branch called user/topic that is based off master.
+* step 2 make your commits
+* step 3 rebase your branch against current master
+* step 4 push to your branch and make a pr.
+
+### On Versioning
+
+* gradle release
+  * this one increments the patch and pushes for you.
+* gradle devSnapshot
+  * this one increments the patch and allow you to create a commit note before pushing.
+  * push to master 
+* Notify contributors that new version is up.
+  * // TODO automation needed;
