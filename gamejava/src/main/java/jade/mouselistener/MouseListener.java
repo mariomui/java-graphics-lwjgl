@@ -21,6 +21,7 @@ public class MouseListener {
     public MouseListener(double posX, double posY) {
         this.posX = posX;
         this.posY = posY;
+        MouseListener.instance = this;
     }
 
     public static MouseListener get() {
@@ -28,6 +29,12 @@ public class MouseListener {
             MouseListener.instance =  new MouseListener(0, 0);
         }
         return MouseListener.instance;
+    }
+    public double getPosY() {
+        return this.posY;
+    }
+    public double getPosX() {
+        return this.posX;
     }
 }
 

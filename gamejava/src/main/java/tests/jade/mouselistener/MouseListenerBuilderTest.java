@@ -3,13 +3,30 @@ package tests.jade.mouselistener;
 import jade.mouselistener.MouseListener;
 import jade.mouselistener.MouseListenerBuilder;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MouseListenerBuilderTest {
 
     @Test
-    void build() {
-        MouseListener testInstance = new MouseListenerBuilder(0, 0).build();
+    void buildShouldReturnAnInstanceOfMouseListener() {
+        MouseListener testInstance = new MouseListenerBuilder().build();
         Assertions.assertEquals(testInstance instanceof MouseListener, true );
+        Assertions.assertEquals(testInstance.getPosX(), 0);
+        Assertions.assertEquals(testInstance.getPosY(), 0);
+    }
+
+    @Test
+    @DisplayName("should set 5 and 3 as pos x and posY")
+    void buildShouldReturnProperties() {
+        MouseListener testInstance = new MouseListenerBuilder().setPosX(3).setPosY(5).build();
+        Assertions.assertEquals(testInstance.getPosY(), 5 );
+        Assertions.assertEquals(testInstance.getPosX(), 3);
+    }
+    @Test
+    void buildShouldFailWhenOnlyOneIsReturned() {
+        MouseListener testInstance = new MouseListenerBuilder().setPosX(3).build();
+        Assertions.assertEquals(testInstance.getPosY(), 0 );
+        Assertions.assertEquals(testInstance.getPosX(), 3);
     }
 }

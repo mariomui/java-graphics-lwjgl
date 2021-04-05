@@ -54,6 +54,7 @@ test {
 //        events "passed", "skipped", "failed"
 //    }
 }
+
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
  file = new File("CHANGELOG.md");
  fromRepo = file("../");
