@@ -15,17 +15,22 @@ public class MouseListener {
     // keep in mind the cartesian mapping is southwest(0,0) style
     // in web terms its called upside down canvas. canvas is northwest style.
     // svg uses northwest style coordinate system as well.
+    private boolean isDragging;
+    private double scrollX, scrollY;
 
     private MouseButtonState[] MouseButtonsStates = new MouseButtonState[3];
-    public MouseListener(double posX, double posY) {
-        this.posX = posX;
-        this.posY = posY;
-        MouseListener.instance = this;
+    public MouseListener() {
+        this.posX = 0.0;
+        this.posY = 0.0;
+        this.scrollX = 0.0;
+        this.scrollY= 0.0;
+        this.lastX = 0.0;
+        this.lastY = 0.0;
     }
 
     public static MouseListener get() {
         if (MouseListener.instance == null) {
-            MouseListener.instance =  new MouseListener(0, 0);
+            MouseListener.instance =  new MouseListener();
         }
         return MouseListener.instance;
     }

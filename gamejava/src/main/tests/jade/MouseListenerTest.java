@@ -8,9 +8,10 @@ class MouseListenerTest {
 
     @Test
     void get() {
-        MouseListener instanced = new MouseListener(3, 5);
+        MouseListener instanced = new MouseListener();
 
-        Assertions.assertEquals(5, 5);
+        Assertions.assertNotNull(MouseListener.get(), "should have an instance");
+        Assertions.assertTrue(instanced instanceof MouseListener);
     }
 
 }
