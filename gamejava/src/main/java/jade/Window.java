@@ -64,6 +64,12 @@ public class Window {
         // now make inject/create the window.
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
+
         if (glfwWindow == NULL) {
             throw new IllegalStateException("Failed to create the GLFW window.");
         }
@@ -151,6 +157,10 @@ public class Window {
             */
             glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+                System.out.println("space key is pressed");
+            }
 
             /*
             glfwSwapBuffers swaps the front and back buffers of the specified window when rendering with OpenGL or OpenGL ES.
