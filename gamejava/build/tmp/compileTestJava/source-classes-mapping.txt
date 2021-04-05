@@ -1,2 +1,0 @@
-jade/MouseListenerTest.java
- jade.MouseListenerTest
