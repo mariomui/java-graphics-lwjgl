@@ -1,7 +1,0 @@
-Main.java
- Main
-jade/MouseListener.java
- jade.MouseButtonState
- jade.MouseListener
-jade/Window.java
- jade.Window
