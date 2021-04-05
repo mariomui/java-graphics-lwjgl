@@ -1,4 +1,4 @@
-package jade;
+package jade.mouselistener;
 
 /**
  * what is the purpose of this listener?
@@ -11,20 +11,29 @@ package jade;
  */
 public class MouseListener {
     // we making a static instance again? makes sense, there's only one mouse.
-    private static MouseListener instance;
+    private static MouseListener instance = null;
     private double posX, posY, lastX, lastY; // give us dY and dY
     // keep in mind the cartesian mapping is southwest(0,0) style
     // in web terms its called upside down canvas. canvas is northwest style.
     // svg uses northwest style coordinate system as well.
 
     private MouseButtonState[] MouseButtonsStates = new MouseButtonState[3];
-    public MouseListener(float posX, float posY) {
+    public MouseListener(double posX, double posY) {
         this.posX = posX;
         this.posY = posY;
+    }
+
+    public static MouseListener get() {
+        if (MouseListener.instance == null) {
+            MouseListener.instance =  new MouseListener(0, 0);
+        }
+        return MouseListener.instance;
     }
 }
 
 abstract class MouseButtonState {
     public boolean pressed = false;
-    public boolean foo = false;
 }
+
+
+
