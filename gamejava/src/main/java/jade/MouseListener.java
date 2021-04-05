@@ -1,5 +1,3 @@
-package jade.mouselistener;
-
 /**
  * what is the purpose of this listener?
  * handles input from mouse
@@ -9,6 +7,7 @@ package jade.mouselistener;
  *      all math functions return doubles
  *   float   32              3 .4e–038 to 3.4e+038
  */
+package jade;
 public class MouseListener {
     // we making a static instance again? makes sense, there's only one mouse.
     private static MouseListener instance = null;
@@ -21,6 +20,7 @@ public class MouseListener {
     public MouseListener(double posX, double posY) {
         this.posX = posX;
         this.posY = posY;
+        MouseListener.instance = this;
     }
 
     public static MouseListener get() {
@@ -29,11 +29,16 @@ public class MouseListener {
         }
         return MouseListener.instance;
     }
+    public double getPosY() {
+        return this.posY;
+    }
+    public double getPosX() {
+        return this.posX;
+    }
 }
 
 abstract class MouseButtonState {
     public boolean pressed = false;
 }
-
 
 

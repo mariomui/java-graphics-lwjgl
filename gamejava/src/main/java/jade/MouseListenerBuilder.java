@@ -1,12 +1,12 @@
-package jade.mouselistener;
+package jade;
 
 public class MouseListenerBuilder {
     private double posX = 0;
     private double posY = 0;
 
-    public MouseListenerBuilder(double posX, double posY) {
-        this.posX = posX;
-        this.posY = posY;
+    public MouseListenerBuilder() {
+        this.setPosX(0);
+        this.setPosY(0);
     }
 
     public MouseListenerBuilder setPosX(double posX) {
@@ -19,7 +19,9 @@ public class MouseListenerBuilder {
         return this;
     }
 
+
+
     public MouseListener build() {
-        return new MouseListener(posX, posY);
+        return new MouseListener(this.posX, this.posY);
     }
 }
