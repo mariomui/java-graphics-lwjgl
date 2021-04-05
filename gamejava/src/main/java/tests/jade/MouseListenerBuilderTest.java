@@ -1,5 +1,7 @@
-package jade.mouselistener;
+package tests.jade;
 
+import jade.MouseListener;
+import jade.MouseListenerBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +11,7 @@ class MouseListenerBuilderTest {
     @Test
     void buildShouldReturnAnInstanceOfMouseListener() {
         MouseListener testInstance = new MouseListenerBuilder().build();
-        Assertions.assertEquals(testInstance instanceof MouseListener, true );
+        Assertions.assertNotNull(testInstance);
         Assertions.assertEquals(testInstance.getPosX(), 0);
         Assertions.assertEquals(testInstance.getPosY(), 0);
     }
@@ -27,4 +29,6 @@ class MouseListenerBuilderTest {
         Assertions.assertEquals(testInstance.getPosY(), 0 );
         Assertions.assertEquals(testInstance.getPosX(), 3);
     }
+
+
 }

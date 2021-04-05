@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'
     id 'nebula.release' version '15.3.1' // or current latest
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.66'
 
@@ -50,9 +51,9 @@ task showVersion {
 }
 test {
     useJUnitPlatform()
-//    testLogging {
-//        events "passed", "skipped", "failed"
-//    }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {

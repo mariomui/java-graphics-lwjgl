@@ -1,4 +1,4 @@
-package jade.mouselistener;
+package jade;
 
 public class MouseListenerBuilder {
     private double posX = 0;
