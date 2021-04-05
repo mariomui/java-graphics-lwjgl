@@ -1,6 +1,5 @@
-package tests.jade;
+package jade;
 
-import jade.MouseListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
