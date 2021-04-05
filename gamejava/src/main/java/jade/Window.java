@@ -4,6 +4,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -37,6 +38,9 @@ public class Window {
         System.out.println("The version of the game framework is " + Version.getVersion());
         initWindowCharacteristics();
         loop();
+        // free memory when loop ends or when it closes.
+        glfwFreeCallbacks(glfwWindow);
+        glfwDestroyWindow(glfwWindow);
     }
     public void initWindowCharacteristics() {
         // set up an error subsink
