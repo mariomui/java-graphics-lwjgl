@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'nebula.release' version '15.0.0' // or current latest
+    id 'nebula.release' version '15.3.1' // or current latest
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.66'
 
 }
@@ -11,8 +11,6 @@ project.ext.jomlVersion = "1.10.1"
 project.ext.lwjglNatives = "natives-macos"
 
 repositories {
-     gradlePluginPortal()
-
     mavenCentral()
 }
 

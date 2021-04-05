@@ -1,6 +1,48 @@
 
 Changelog of gamejava.
 
+## Unreleased
+### No issue
+
+**save changes**
+
+
+[160d86bf647ccb1](https://github.com/mariomui/java-graphics-lwjgl/commit/160d86bf647ccb1) mariomui *2021-04-05 07:27:16*
+
+**remove plugin portal**
+
+
+[2483a759c6d6f8b](https://github.com/mariomui/java-graphics-lwjgl/commit/2483a759c6d6f8b) mariomui *2021-04-05 07:23:18*
+
+
+## v0.2.0-rc.5
+### GitHub [#7](https://github.com/mariomui/java-graphics-lwjgl/pull/7) Update readme and make changelog  
+
+**Merge pull request #7 from mariomui/mario/general**
+
+ * Update readme and make changelog
+
+[7a67d34ae4664c4](https://github.com/mariomui/java-graphics-lwjgl/commit/7a67d34ae4664c4) Yi Kan Mario Mui *2021-04-05 07:21:57*
+
+
+### No issue
+
+**update readme**
+
+
+[cb79ae2d476ef9c](https://github.com/mariomui/java-graphics-lwjgl/commit/cb79ae2d476ef9c) mariomui *2021-04-05 07:19:04*
+
+**update with release notes plugins**
+
+
+[b5b49387b79dcdc](https://github.com/mariomui/java-graphics-lwjgl/commit/b5b49387b79dcdc) mariomui *2021-04-05 07:19:04*
+
+**Make first changelog md**
+
+
+[510fb94a207f6a7](https://github.com/mariomui/java-graphics-lwjgl/commit/510fb94a207f6a7) mariomui *2021-04-05 07:19:04*
+
+
 ## v0.2.0-rc.4
 ### GitHub [#6](https://github.com/mariomui/java-graphics-lwjgl/pull/6) Setup first tests  
 
