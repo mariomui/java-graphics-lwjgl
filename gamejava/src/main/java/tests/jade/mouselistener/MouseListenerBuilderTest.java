@@ -1,7 +1,5 @@
-package tests.jade.mouselistener;
+package jade.mouselistener;
 
-import jade.mouselistener.MouseListener;
-import jade.mouselistener.MouseListenerBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
