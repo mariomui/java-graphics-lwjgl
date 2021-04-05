@@ -11,8 +11,8 @@ project.ext.jomlVersion = "1.10.1"
 project.ext.lwjglNatives = "natives-macos"
 
 repositories {
-    // gradlePluginPortal()
-    mavenLocal()
+     gradlePluginPortal()
+
     mavenCentral()
 }
 
@@ -58,7 +58,7 @@ test {
 }
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
  file = new File("CHANGELOG.md");
- fromRepo = "../";;
+ fromRepo = file("../");
  fromRef = "v0.1.0";
  templateContent = """
 Changelog of ${projectDisplayName}.
