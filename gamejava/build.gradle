@@ -1,14 +1,18 @@
 plugins {
     id 'java'
     id 'nebula.release' version '15.0.0' // or current latest
-}
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.66'
 
+}
+project.ext.projectDisplayName="gamejava"
 
 project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.10.1"
 project.ext.lwjglNatives = "natives-macos"
 
 repositories {
+    // gradlePluginPortal()
+    mavenLocal()
     mavenCentral()
 }
 
@@ -51,4 +55,41 @@ test {
 //    testLogging {
 //        events "passed", "skipped", "failed"
 //    }
+}
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+ file = new File("CHANGELOG.md");
+ fromRepo = "../";;
+ fromRef = "v0.1.0";
+ templateContent = """
+Changelog of ${projectDisplayName}.
+
+{{#tags}}
+## {{name}}
+ {{#issues}}
+  {{#hasIssue}}
+   {{#hasLink}}
+### {{name}} [{{issue}}]({{link}}) {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+   {{/hasLink}}
+   {{^hasLink}}
+### {{name}} {{issue}} {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+   {{/hasLink}}
+  {{/hasIssue}}
+  {{^hasIssue}}
+### {{name}}
+  {{/hasIssue}}
+
+  {{#commits}}
+**{{{messageTitle}}}**
+
+{{#messageBodyItems}}
+ * {{.}}
+{{/messageBodyItems}}
+
+[{{hash}}](https://github.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+
+  {{/commits}}
+
+ {{/issues}}
+{{/tags}}
+ """;
 }
