@@ -63,9 +63,16 @@ public class Window {
 
 
         // over engineer setting window hint 3 times to learn java array structure.
-        glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
-        glfwWindowHint(GLFW_MAXIMIZED,GLFW_TRUE);
-        glfwWindowHint(GLFW_RESIZABLE,GLFW_TRUE);
+
+        int[][] preparedWindowFlags = {
+                {GLFW_VISIBLE, GLFW_FALSE},
+                {GLFW_MAXIMIZED, GLFW_TRUE},
+                {GLFW_RESIZABLE, GLFW_TRUE}
+        };
+        for (int[] preparedWindoFlags : preparedWindowFlags) {
+            glfwWindowHint(preparedWindoFlags[0],preparedWindoFlags[1]);
+        }
+
 
         // now make inject/create the window.
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
