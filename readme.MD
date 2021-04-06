@@ -68,10 +68,10 @@ collection that javascript has.
 
 Part 3: CI and CD 
 
-[ ] circle ci orbs
-  [ ] make sure contrib branch is rebased properly against master
-  [ ] on all tests passing, build, on build passing, merge pull request.
-  [ ] on merge delete contributor remote branch.
+- [ ] circle ci orbs
+  - [ ] make sure contrib branch is rebased properly against master
+  - [ ] on all tests passing, build, on build passing, merge pull request.
+  - [ ] on merge delete contributor remote branch.
 ----
 
 ## Versioning
