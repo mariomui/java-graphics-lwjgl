@@ -16,13 +16,19 @@ public class Window {
     public String title;
     private long glfwWindow;
 
+    private float r,a,g,b;
 
     public static Window window = null;
+    boolean fadeToBlack = false;
 
     private Window() {
         this.width = 1200;
         this.height = 1980;
         this.title = "window title";
+        r = 1;
+        g = 1;
+        b = 1;
+        a = 1;
     }
 
     public static Window get() {
@@ -132,7 +138,18 @@ public class Window {
         GL.createCapabilities();
 
     }
+    private void fadeToBlack() {
 
+        if (this.fadeToBlack) {
+            this.r -= .01f;
+            this.g -= .01f;
+            this.b -= .01f;
+            this.a -= .01f;
+            if (this.r + this.g + this.a + this.b <= 0) {
+                this.fadeToBlack = false;
+            }
+        }
+    }
 
     public void loop() {
         // shouldClose? glfwWindowShouldClose checks if the window is closed.
@@ -150,16 +167,28 @@ public class Window {
                 * on buffer swap, i am certain that glfw checks if the pollevents has been called.
             */
             glfwPollEvents();
+
+            /*
+            java members are implicitly scoped to the class. x = this.x, for all intents and purpsoes.
+            https://stackoverflow.com/questions/2411270/when-should-i-use-this-in-a-class
+            the builder pattern is more useful using the this context to insert into the parameter of the buildee
+            with the added benefit of keeping the components grouped.
+             */
+            fadeToBlack();
+
             /*
              * Color buffer clears. and defaults remain.
              * // TODO depth buffer also clears Not clearing
              * glClear sets the color defaults. while glclear actually clears the buffers
             */
-            glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            glClearColor(r,g,b,a);
+//            glClearColor(this.r,this.g,this.b,this.a);
             glClear(GL_COLOR_BUFFER_BIT);
+
 
             if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
                 System.out.println("space key is pressed");
+                fadeToBlack = true;
             }
 
             /*
