@@ -10,19 +10,24 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-
 public class Window {
     public int width, height;
     public String title;
     private long glfwWindow;
 
+    private float r,a,g,b;
 
     public static Window window = null;
+    boolean fadeToBlack = false;
 
     private Window() {
         this.width = 1200;
         this.height = 1980;
         this.title = "window title";
+        r = 1;
+        g = 1;
+        b = 1;
+        a = 1;
     }
 
     public static Window get() {
@@ -37,6 +42,8 @@ public class Window {
 
         System.out.println("The version of the game framework is " + Version.getVersion());
         initWindowCharacteristics();
+
+        // initate the MouseListener or else it wont get done correctly
         loop();
         // free memory when loop ends or when it closes.
         glfwFreeCallbacks(glfwWindow);
@@ -57,12 +64,35 @@ public class Window {
 
 
         // over engineer setting window hint 3 times to learn java array structure.
-        glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
-        glfwWindowHint(GLFW_MAXIMIZED,GLFW_TRUE);
-        glfwWindowHint(GLFW_RESIZABLE,GLFW_TRUE);
+
+        int[][] preparedWindowFlags = {
+                {GLFW_VISIBLE, GLFW_FALSE},
+                {GLFW_MAXIMIZED, GLFW_TRUE},
+                {GLFW_RESIZABLE, GLFW_TRUE}
+        };
+        for (int[] preparedWindoFlags : preparedWindowFlags) {
+            glfwWindowHint(preparedWindoFlags[0],preparedWindoFlags[1]);
+        }
+
 
         // now make inject/create the window.
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
+
+//        This function sets the cursor position callback of the specified window, which is called when the cursor is moved. The callback is provided with the position, in screen coordinates, relative to the upper-left corner of the client area of the window.
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+//        glfwSetCursorPosCallback(glfwWindow, (window, x,y) -> System.out.println(x + " " + y));
+
+//        This function sets the mouse button callback of the specified window, which is called when a mouse button is pressed or released.
+        // you can only call this listener once.
+        // the last callback will replace the first callbacks.
+        // no multiple listeners
+//        glfwSetMouseButtonCallback(glfwWindow, (window,buttonIdx,actionIdx,m) -> System.out.println(buttonIdx + m + "pressed"));
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+
+
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
 
         if (glfwWindow == NULL) {
             throw new IllegalStateException("Failed to create the GLFW window.");
@@ -126,7 +156,18 @@ public class Window {
         GL.createCapabilities();
 
     }
+    private void fadeToBlack() {
 
+        if (this.fadeToBlack) {
+            this.r -= .01f;
+            this.g -= .01f;
+            this.b -= .01f;
+            this.a -= .01f;
+            if (this.r + this.g + this.a + this.b <= 0) {
+                this.fadeToBlack = false;
+            }
+        }
+    }
 
     public void loop() {
         // shouldClose? glfwWindowShouldClose checks if the window is closed.
@@ -144,13 +185,38 @@ public class Window {
                 * on buffer swap, i am certain that glfw checks if the pollevents has been called.
             */
             glfwPollEvents();
+
+
+// Let's put all my debugging here
+            /*
+            java members are implicitly scoped to the class. x = this.x, for all intents and purpsoes.
+            https://stackoverflow.com/questions/2411270/when-should-i-use-this-in-a-class
+            the builder pattern is more useful using the this context to insert into the parameter of the buildee
+            with the added benefit of keeping the components grouped.
+             */
+            fadeToBlack();
+
+
+////
             /*
              * Color buffer clears. and defaults remain.
              * // TODO depth buffer also clears Not clearing
              * glClear sets the color defaults. while glclear actually clears the buffers
             */
-            glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            glClearColor(r,g,b,a);
+//            glClearColor(this.r,this.g,this.b,this.a);
             glClear(GL_COLOR_BUFFER_BIT);
+
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+                System.out.println("space key is pressed");
+                fadeToBlack = true;
+            }
+            if (MouseListener.mouseButtonDown(0)) {
+
+                System.out.println("you held 0" + MouseListener.mouseButtonDown(0));
+            }
+
 
             /*
             glfwSwapBuffers swaps the front and back buffers of the specified window when rendering with OpenGL or OpenGL ES.

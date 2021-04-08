@@ -1,9 +1,11 @@
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+
 plugins {
     id 'java'
     id 'idea'
     id 'nebula.release' version '15.3.1' // or current latest
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.66'
-
+//    id 'com.adarshr.test-logger' version '2.1.0'
 }
 project.ext.projectDisplayName="gamejava"
 
@@ -51,15 +53,20 @@ task showVersion {
 }
 test {
     useJUnitPlatform()
-    testLogging {
+     testLogging {
         events "passed", "skipped", "failed"
+    }
+
+    afterTest { desc, result ->
+        def output = "Class name: ${desc.className}, Test name: ${desc.name},  (Test status: ${result.resultType})"
+        println( '\n' + output)
     }
 }
 
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
- file = new File("CHANGELOG.md");
- fromRepo = file("../");
- fromRef = "v0.1.0";
+task gitChangelogTask(type: GitChangelogTask) {
+ file = new File("CHANGELOG.md")
+ fromRepo = file("../")
+ fromRef = "v0.1.0"
  templateContent = """
 Changelog of ${projectDisplayName}.
 
@@ -91,5 +98,5 @@ Changelog of ${projectDisplayName}.
 
  {{/issues}}
 {{/tags}}
- """;
+ """
 }
