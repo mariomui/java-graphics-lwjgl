@@ -3,6 +3,9 @@ package jade;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import util.Time;
+
+import java.util.Optional;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -20,6 +23,10 @@ public class Window {
     public static Window window = null;
     boolean fadeToBlack = false;
 
+
+
+    private static Scene currentScene = null;
+
     private Window() {
         this.width = 1200;
         this.height = 1980;
@@ -29,7 +36,7 @@ public class Window {
         b = 1;
         a = 1;
     }
-
+// statics
     public static Window get() {
         if (Window.window == null) {
             Window.window = new Window();
@@ -37,6 +44,31 @@ public class Window {
 
         return Window.window;
     }
+
+    public static void changeScene(int sceneIdx) {
+        switch (sceneIdx) {
+            case 0:
+                // this is bad, we are instantiating classes here.
+                /*
+                If the point is to change Scenes, we should have a
+                listener to some ChangeScene variable and we should be registering this change scene function to that variable.
+                The sceneManager will also listen to this variable.
+                and create the scene necessary.
+                our function would then ping the sceneManager for the
+                next scene, and we would recieve the instanced scene it via a callback.
+                creating the scene object inside Window makes the scene object unreachable by testing.
+
+                 */
+                currentScene = new LevelEditorScene();
+                break;
+            case 1:
+                currentScene = new LevelScene();
+                break;
+            default:
+                assert false: "unknown scene '" + sceneIdx + "'";
+        }
+    }
+
 
     public void run() {
 
@@ -49,6 +81,8 @@ public class Window {
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
     }
+
+
     public void initWindowCharacteristics() {
         // set up an error subsink
         GLFWErrorCallback.createPrint(System.err).set();
@@ -154,11 +188,24 @@ public class Window {
           * TLDR: looks up the function in a virtual functions table so the functions you call actually work on your platform.
         */
         GL.createCapabilities();
+        Window.changeScene(0);
 
+    } // end init window config
+
+
+
+
+    public void setColors(float r, float g, float b, float a) {
+        this.r = r; this.g= g; this.b = this.b;this.a = a;
     }
-    private void fadeToBlack() {
 
-        if (this.fadeToBlack) {
+    private void makeFadeToBlack() {
+        return;
+    }
+
+    public void makeFadeToBlack(Optional<Integer> disable) {
+        Integer disableIn = disable.isPresent() ? disable.get(): 0;
+        if (this.fadeToBlack && disableIn > 0) {
             this.r -= .01f;
             this.g -= .01f;
             this.b -= .01f;
@@ -168,8 +215,17 @@ public class Window {
             }
         }
     }
+    public void decreaseColors(float rDecT, float gDecT, float bDecT, float aDect) {
+        r -= rDecT;
+        g -= gDecT;
+        b -= bDecT;
+        a -= aDect;
 
+    }
     public void loop() {
+        float loopStartTime = Time.getTime();
+        var loopEndTime = loopStartTime;
+        float dt = -1.0f;
         // shouldClose? glfwWindowShouldClose checks if the window is closed.
         // if gflw...close is true then the window is closed.
         // aka isGlfwWindowClosed is a better name
@@ -194,7 +250,7 @@ public class Window {
             the builder pattern is more useful using the this context to insert into the parameter of the buildee
             with the added benefit of keeping the components grouped.
              */
-            fadeToBlack();
+            makeFadeToBlack();
 
 
 ////
@@ -206,11 +262,13 @@ public class Window {
             glClearColor(r,g,b,a);
 //            glClearColor(this.r,this.g,this.b,this.a);
             glClear(GL_COLOR_BUFFER_BIT);
-
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-                System.out.println("space key is pressed");
+            if (dt > 0) {
+                currentScene.update(dt);
+            }
+            if (KeyListener.isKeyPressed(GLFW_KEY_X)) {
+                System.out.println("x key is pressed");
                 fadeToBlack = true;
+                changeScene(0);
             }
             if (MouseListener.mouseButtonDown(0)) {
 
@@ -225,6 +283,13 @@ public class Window {
             * screen updates? is this the fresh rate? number of changed pixels per second to refresh?
              */
             glfwSwapBuffers(glfwWindow);
+
+            loopEndTime = Time.getTime();
+            dt =  loopEndTime - loopStartTime;
+
+            loopStartTime = loopEndTime;
+
         }
     }
+
 }
