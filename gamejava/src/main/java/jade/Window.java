@@ -77,8 +77,15 @@ public class Window {
         // now make inject/create the window.
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
+//        This function sets the cursor position callback of the specified window, which is called when the cursor is moved. The callback is provided with the position, in screen coordinates, relative to the upper-left corner of the client area of the window.
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        glfwSetCursorPosCallback(glfwWindow, (window, x,y) -> System.out.println(x + " " + y));
+
+//        This function sets the mouse button callback of the specified window, which is called when a mouse button is pressed or released.
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+
+        glfwSetMouseButtonCallback(glfwWindow, (window,buttonIdx,actionIdx,m) -> System.out.println(buttonIdx + m + "pressed"));
+
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
 
