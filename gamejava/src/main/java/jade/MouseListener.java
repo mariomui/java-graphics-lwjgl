@@ -22,8 +22,11 @@ public class MouseListener {
     private boolean isDragging;
     private double scrollX, scrollY;
 
-    private MouseButtonState[] MouseButtonsStates = new MouseButtonState[3];
-
+//    private MouseButtonState[] MouseButtonsStates = {
+//            new MouseButtonState(),
+//                new MouseButtonState(),
+//            new MouseButtonState()};
+private MouseButtonState[] MouseButtonsStates = new MouseButtonState[3];
 
     public MouseListener() {
         this.posX = 0.0;
@@ -50,6 +53,9 @@ public class MouseListener {
         get().posX = posX;
         get().posY = posY;
 
+        // the reason why this works is that we are using a singleton.
+        // even though the instance is never initialized early, we initialize on moment of first call with the get().
+        // you may as well call it , initOrGetStatic() instead of get.
         get().isDragging = (get().MouseButtonsStates[0].isPressed
                 || get().MouseButtonsStates[1].isPressed
                 || get().MouseButtonsStates[2].isPressed);
@@ -103,6 +109,8 @@ public class MouseListener {
 
     public static boolean mouseButtonDown(int buttonIdx) {
         if (buttonIdx < get().MouseButtonsStates.length) {
+
+
             return get().MouseButtonsStates[buttonIdx].isPressed;
         }
         return false;
