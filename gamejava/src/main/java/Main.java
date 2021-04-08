@@ -8,6 +8,5 @@ public class Main {
         window = Window.get();
         window.run();
 
-
     }
 }
